@@ -3,4 +3,4 @@ FROM oven/bun
 
 WORKDIR /app
 
-CMD ["bun", "src/server.ts"]
+CMD ["bun", "run", "dev"]

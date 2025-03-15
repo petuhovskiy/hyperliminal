@@ -1,6 +1,20 @@
 import { readFileSync } from 'fs';
 import { join } from 'path';
 
+// Mulberry32 PRNG implementation
+function mulberry32(seed: number) {
+    return function () {
+        seed |= 0;
+        seed = seed + 0x6D2B79F5 | 0;
+        let t = Math.imul(seed ^ seed >>> 15, 1 | seed);
+        t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t;
+        return ((t ^ t >>> 14) >>> 0) / 4294967296;
+    };
+}
+
+// Fixed seed for deterministic behavior
+const seed = 1234;
+
 // Check if a number is prime
 function isPrime(num: number): boolean {
     if (num <= 1) return false;
@@ -36,9 +50,12 @@ class Dictionary {
 
         this.size = words.length;
 
-        // Shuffle words using Fisher-Yates algorithm
+        // Initialize PRNG with fixed seed
+        const rng = mulberry32(seed);
+
+        // Shuffle words using Fisher-Yates algorithm with deterministic RNG
         for (let i = words.length - 1; i > 0; i--) {
-            const j = Math.floor(Math.random() * (i + 1));
+            const j = Math.floor(rng() * (i + 1));
             // We know these indices exist since j <= i and i < words.length
             [words[i]!, words[j]!] = [words[j]!, words[i]!];
         }

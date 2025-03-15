@@ -3,7 +3,7 @@
   "module": "src/server.ts",
   "type": "module",
   "scripts": {
-    "dev": "bun --watch run src/server.ts"
+    "dev": "bun run src/server.ts"
   },
   "devDependencies": {
     "bun-types": "latest"
