@@ -1,8 +1,6 @@
 # Dockerfile
-FROM oven/bun:latest
+FROM oven/bun
 
 WORKDIR /app
 
-COPY . .
-
-CMD ["bun", "run", "dev"]
+CMD ["bun", "src/server.ts"]
